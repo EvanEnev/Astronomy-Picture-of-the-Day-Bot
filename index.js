@@ -45,11 +45,6 @@ bot.start(async (ctx) => {
 });
 bot.help((ctx) => ctx.reply('Send me a sticker'));
 
-const GetPicture = async () =>
-  await axios.get(
-    `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
-  );
-
 bot.command('picture', async (ctx) => {
   const msg = await ctx.reply('Загрузка..');
   const {
@@ -58,7 +53,7 @@ bot.command('picture', async (ctx) => {
 
   ctx
     .replyWithPhoto(
-      { url: hdurl },
+      { url },
       {
         caption: `*Заголовок:* ${
           title.replaceAll('.', '\\.') || '_ошибка_'
@@ -150,7 +145,7 @@ setInterval(async () => {
     bot.telegram
       .sendPhoto(
         user.TelegramID,
-        { url: hdurl },
+        { url },
         {
           caption: `*Заголовок:* ${
             title.replaceAll('.', '\\.') || '_ошибка_'
@@ -167,7 +162,7 @@ setInterval(async () => {
     bot.telegram
       .sendPhoto(
         group.TelegramID,
-        { url: hdurl },
+        { url },
         {
           caption: `*Заголовок:* ${
             title.replaceAll('.', '\\.') || '_ошибка_'

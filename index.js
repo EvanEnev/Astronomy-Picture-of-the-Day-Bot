@@ -46,12 +46,19 @@ bot.start(async (ctx) => {
 bot.command('picture', async (ctx) => {
   const msg = await ctx.reply('Загрузка..')
 
-  let picture = (await Config.findOne({ _id: 0 })) || {}
+  let picture = (await Config.findOne({ _id: 0 })).picture
 
-  if (!Object.keys(picture).length) {
-    picture = await axios.get(
-      `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
-    )
+  if (!picture?.title) {
+    picture = (
+      await axios.get(
+        `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
+      )
+    ).data
+
+    const { url, hdurl, title } = picture
+
+    const DateNoon = new Date(new Date().setUTCHours(9, 0, 0, 0))
+    const UnixNoon = Math.floor(DateNoon.getTime())
 
     await Config.findOneAndUpdate(
       { _id: 0 },
@@ -67,7 +74,7 @@ bot.command('picture', async (ctx) => {
       { url },
       {
         caption: `*Заголовок:* ${
-          title.replaceAll('.', '\\.') || '_ошибка_'
+          title?.replaceAll('.', '\\.') || '_ошибка_'
         }\n\n*[Открыть](${url}) \\| [HD](${hdurl})*`,
         parse_mode: 'MarkdownV2',
       }
@@ -137,7 +144,9 @@ setInterval(async () => {
   const DateNoon = new Date(new Date().setUTCHours(9, 0, 0, 0))
   const UnixNoon = Math.floor(DateNoon.getTime())
 
-  const { url, hdurl, title } = await axios.get(
+  const {
+    data: { url, hdurl, title },
+  } = await axios.get(
     `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
   )
 

@@ -45,9 +45,22 @@ bot.start(async (ctx) => {
 
 bot.command('picture', async (ctx) => {
   const msg = await ctx.reply('Загрузка..')
-  const {
-    picture: { hdurl, url, title },
-  } = await Config.findOne({ _id: 0 })
+
+  let picture = (await Config.findOne({ _id: 0 })) || {}
+
+  if (!Object.keys(picture).length) {
+    picture = await axios.get(
+      `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
+    )
+
+    await Config.findOneAndUpdate(
+      { _id: 0 },
+      { picture: { url, hdurl, title }, LastCheck: UnixNoon },
+      { upsert: true }
+    )
+  }
+
+  const { url, hdurl, title } = picture
 
   ctx
     .replyWithPhoto(
@@ -115,7 +128,7 @@ bot.command('subscribe', async (ctx) => {
 bot.launch().then(() => console.log('Telegram Bot Started'))
 
 setInterval(async () => {
-  const LastCheck = (await Config.findOne({ _id: 0 })).LastCheck || 0
+  const LastCheck = (await Config.findOne({ _id: 0 }))?.LastCheck || 0
 
   const UnixNow = Math.floor(new Date().getTime())
 
@@ -124,9 +137,7 @@ setInterval(async () => {
   const DateNoon = new Date(new Date().setUTCHours(9, 0, 0, 0))
   const UnixNoon = Math.floor(DateNoon.getTime())
 
-  const {
-    data: { url, hdurl, title },
-  } = await axios.get(
+  const { url, hdurl, title } = await axios.get(
     `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_TOKEN}`
   )
 

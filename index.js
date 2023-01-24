@@ -183,8 +183,10 @@ setInterval(async () => {
         { url },
         {
           caption: `*Заголовок:* ${
-            title.replaceAll('.', '\\.') || '_ошибка_'
-          }\n\n*[Открыть](${url}) \\| [HD](${hdurl})*`,
+            title || '_ошибка_'
+          }\n\n*[Открыть](${url}) \\| [HD](${hdurl})*`
+            .replaceAll('.', '\\.')
+            .replaceAll('-', '\\-'),
           parse_mode: 'MarkdownV2',
         }
       )

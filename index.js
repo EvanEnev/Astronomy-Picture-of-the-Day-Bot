@@ -54,4 +54,4 @@ setInterval(async () => {
   } else if (date.getHours() !== 12 && bot.sent) {
     bot.sent = false
   }
-}, 1 * 1000)
+}, 10 * 60 * 1000)

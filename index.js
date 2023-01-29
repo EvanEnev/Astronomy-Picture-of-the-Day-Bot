@@ -24,7 +24,6 @@ readdirSync('./Handlers')
 setInterval(async () => {
   const date = new Date()
 
-  console.debug(bot.sent)
   if (date.getHours() === 12 && !bot.sent) {
     const picture = (
       await axios.get(

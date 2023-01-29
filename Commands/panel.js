@@ -22,7 +22,7 @@ module.exports = async (msg, bot, id) => {
     parse_mode: 'MarkdownV2',
   }
 
-  const data = await Subsribers.findOne({ id: msg.from.id })
+  const data = await Subsribers.findOne({ id: msg.chat.id })
 
   if (data) {
     options.reply_markup.inline_keyboard[0][0] = {

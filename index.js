@@ -24,7 +24,10 @@ readdirSync('./Handlers')
 setInterval(async () => {
   const date = new Date()
 
-  if (date.getHours() === 12 && !bot.sent) {
+  const TimeString = date.toLocaleTimeString('ru-ru')
+  const time = parseInt(TimeString.slice(0, -6))
+
+  if (time === 12 && !bot.sent) {
     const picture = (
       await axios.get(
         `https://api.nasa.gov/planetary/apod?api_key=${process.env.nasa}`
@@ -51,7 +54,7 @@ setInterval(async () => {
     })
 
     bot.sent = true
-  } else if (date.getHours() !== 12 && bot.sent) {
+  } else if (time !== 12 && bot.sent) {
     bot.sent = false
   }
 }, 10 * 60 * 1000)

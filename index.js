@@ -24,7 +24,9 @@ readdirSync('./Handlers')
 setInterval(async () => {
   const date = new Date()
 
-  const TimeString = date.toLocaleTimeString('ru-ru')
+  const TimeString = date.toLocaleTimeString('ru-ru', {
+    timeZone: 'Europe/Moscow',
+  })
   const time = parseInt(TimeString.slice(0, -6))
 
   if (time === 12 && !bot.sent) {

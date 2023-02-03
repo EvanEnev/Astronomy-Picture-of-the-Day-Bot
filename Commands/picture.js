@@ -23,6 +23,7 @@ module.exports = async (msg, bot, id) => {
       .replaceAll('|', '\\|')
       .replaceAll('-', '\\-')
       .replaceAll('_', '\\_')
+      .replaceAll('.', '\\.')
 
   await bot.sendPhoto(id, picture.url, options)
 }

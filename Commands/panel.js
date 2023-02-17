@@ -10,10 +10,6 @@ module.exports = async (msg, bot, id) => {
             text: '✅ Подписаться',
             callback_data: `Subscribe`,
           },
-          {
-            text: '💬 Подписать другой чат',
-            request_chat: { request_id: 1, chat_is_channel: true },
-          },
         ],
         [
           {

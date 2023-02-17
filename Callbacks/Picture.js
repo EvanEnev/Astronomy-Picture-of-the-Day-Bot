@@ -18,14 +18,16 @@ module.exports = async ({ message, id }, bot) => {
     bot.picture = picture
   }
 
-  options.caption =
-    `*📝 ${picture.title}*\n\n[Открыть](${picture.url}) | [HD](${picture.hdurl})`
-      .replaceAll('|', '\\|')
-      .replaceAll('-', '\\-')
-      .replaceAll('_', '\\_')
-      .replaceAll('.', '\\.')
-      .replaceAll('(', '\\(')
-      .replaceAll(')', '\\)')
+  options.caption = `*📝 ${
+    picture.title
+  }*\n\n[Открыть](${picture.url.replaceAll(
+    '(',
+    '\\('
+  )}) | [HD](${picture.hdurl.replaceAll(')', '\\)')})`
+    .replaceAll('|', '\\|')
+    .replaceAll('-', '\\-')
+    .replaceAll('_', '\\_')
+    .replaceAll('.', '\\.')
 
   await bot.sendPhoto(message.chat.id, picture.url, options)
   await bot.answerCallbackQuery(id)

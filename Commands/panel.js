@@ -25,10 +25,10 @@ module.exports = async (msg, bot, id) => {
   const data = await Subsribers.findOne({ id: msg.chat.id })
 
   if (data) {
-    options.reply_markup.inline_keyboard[0][0] = {
+    options.reply_markup.inline_keyboard[0][0] = [{
       text: '❌ Отписаться',
       callback_data: `Unsubscribe`,
-    }
+    }]
   }
 
   const text =
